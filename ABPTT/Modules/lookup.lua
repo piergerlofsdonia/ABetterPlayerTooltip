@@ -1,6 +1,6 @@
 local NAME, ADDON = ...
 ADDON.local_savedPlayers = {}
-print("Running lookup")
+
 ADDON.local_colours = {
     class = {
         druid = "FF7D0A", hunter = "ABD473", mage = "69CCF0", paladin = "F58CBA", priest = "FFFFFF",

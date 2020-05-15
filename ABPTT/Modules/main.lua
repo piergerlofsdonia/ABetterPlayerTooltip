@@ -1,5 +1,5 @@
 local NAME, ADDON = ...
-print("Running main")
+
 ADDON.local_frame = CreateFrame("Frame", "local_Tooltip", nil, "GameTooltipTemplate")
 ADDON.local_frame.time_struct = { interval = 3, elapsed = 0, fade = 1 }
 ADDON.allowMouseOver = true
@@ -137,7 +137,7 @@ local hideTooltip = function(event, elapsed)
 
     if ( ADDON.local_frame:IsShown() == true ) then
         ADDON.local_frame.time_struct.elapsed = ADDON.local_frame.time_struct.elapsed + elapsed
-      
+         
         if ( ADDON.local_frame.time_struct.elapsed >= ADDON.local_frame.time_struct.interval ) then
             UIFrameFadeOut(ADDON.local_frame, ADDON.local_frame.time_struct.fade, 1.0, 0.0)
             -- Time to show to the user has elapsed, the frame will fade out. 
@@ -151,11 +151,16 @@ local hideTooltip = function(event, elapsed)
 end
 
 local function eventTrigger(self, event, ...)
+    
+    if ( ADDON.local_frame.isDisabled == nil ) then ADDON.local_frame.isDisabled = false end
+
     if ( event == "ADDON_LOADED" ) then
         initFrame()
     elseif ( event == "PLAYER_TARGET_CHANGED") then
+        if ( ADDON.local_frame.isDisabled == true ) then return nil end
         playerTarget('target')
     else
+        if ( ADDON.local_frame.isDisabled == true ) then return nil end
         if ( ADDON.allowMouseOver ) then playerTarget('mouseover') end
     end
 end

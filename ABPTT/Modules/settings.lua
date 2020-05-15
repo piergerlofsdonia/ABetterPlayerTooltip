@@ -1,6 +1,5 @@
 -- load addon title and table (object)
 local NAME, ADDON = ... 
-print("Running settings")
 
 local resetDefaults = function()
     if ( abptt_frameSettings == nil ) then
