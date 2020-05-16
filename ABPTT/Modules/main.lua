@@ -1,5 +1,9 @@
 local NAME, ADDON = ...
-
+--[[
+-- TODO:
+-- 1. Fix bug where text is resized permanently.
+-- 2. Create hook to disable character tooltip.
+]]
 ADDON.local_frame = CreateFrame("Frame", "local_Tooltip", nil, "GameTooltipTemplate")
 ADDON.local_frame.time_struct = { interval = 3, elapsed = 0, fade = 1 }
 ADDON.allowMouseOver = true
@@ -7,7 +11,7 @@ ADDON.allowMouseOver = true
 local lines = {}
 local stringKeys = { "name", "class", "guild", "level", "rank" }; -- Named keys to iterate through (lua does not pull key, value pairs in the written order).
 local initBool = false
-
+local defaultFontSize
 
 local configureFrame = function(args)
     local point, relPoint, offsetX, offsetY = unpack(args.orientation)
@@ -48,6 +52,9 @@ local formatFontString = function(linesTable)
     linesTable.fontString = configureText(linesTable.fontString, linesTable.settings) 
     linesTable.fontString:SetText(linesTable.string)
     local fsWidth = linesTable.fontString:GetStringWidth() + linesTable.settings.orientation[2]
+
+    -- size up AND down the font here...
+    -- OR reset font size by running resetDefaults() and setting lines[i].settings.size to its default value
     while ( fsWidth > frameWidth ) do
         -- Reduce font size.
         fontSize = math.floor(fontSize - (( fsWidth - frameWidth ) / fontSize ))
@@ -86,6 +93,7 @@ local initFrame = function()
     end
 
     initBool = true
+    defaultFontSize = ADDON.settings.text.size
 end
 
 local playerTarget =  function(unitID)
@@ -106,6 +114,7 @@ local playerTarget =  function(unitID)
     }
     
     for i=1, #stringKeys, 1 do
+        lines[i].settings.size = defaultFontSize
         lines[i].string = stringTable[stringKeys[i]]
         
         if ( i > 2 ) then
@@ -140,7 +149,6 @@ local hideTooltip = function(event, elapsed)
          
         if ( ADDON.local_frame.time_struct.elapsed >= ADDON.local_frame.time_struct.interval ) then
             UIFrameFadeOut(ADDON.local_frame, ADDON.local_frame.time_struct.fade, 1.0, 0.0)
-            -- Time to show to the user has elapsed, the frame will fade out. 
             ADDON.local_frame.time_struct.elapsed = 0
         end
 
@@ -170,4 +178,3 @@ ADDON.local_frame:RegisterEvent("ADDON_LOADED")
 ADDON.local_frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 ADDON.local_frame:SetScript("OnEvent", eventTrigger) 
 ADDON.local_frame:SetScript("OnUpdate", hideTooltip)
-print(NAME .. " loaded!") 

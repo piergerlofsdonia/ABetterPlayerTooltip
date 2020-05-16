@@ -10,9 +10,32 @@ ADDON.local_colours = {
         alliance = "00ff00", horde = "ff0000"
     },
     guild = { "a40e0e", "f4ac27", "ffdf13", "bdf531", "52f531", "31f585", "31f5e4", "31c3f5" },
-    level = { "ff0000", "ff4600", "ffdc00", "68ff00", "e0e0e0" },
+    level = { "bbbbbb", "14bb00", "f7df1a", "f7891a", "d10d00" },
     rank = { "ffffff" , "d1d1d1", "979797", "585858", "beff90", "61c619", "60eae0", "2f42be", "ff8585", "d41919", "dc5000", "e6b312", "926bb5", "6c1cb4", "360066"}
 }
+
+-- Scale func
+local scaleInt = function(preMinMax, postMinMax, inputValue)
+    if ( type(inputValue) ~= 'number' ) and ( inputValue ~= nil )then
+        inputValue = tonumber(inputValue)
+        return scaleInt(preMinMax, postMinMax, inputValue)
+    end
+    if ( #preMinMax == 2 ) and ( #postMinMax == 2 ) then
+       local preMin, preMax = unpack(preMinMax)
+       local postMin, postMax = unpack(postMinMax)
+       local preRange = ( preMax - preMin ) 
+       local postRange = ( postMax - postMin )
+    
+       if ( preRange == 0 ) then
+           return postMin
+       else
+           return (((inputValue - preMin) * postRange ) / preRange ) + postMin
+       end
+
+    else
+        error("Incorrect number of values passed to scale function")
+    end
+end
 
 ADDON.local_lookup = function(optUnitID)
     local faction, factionID, username, unitID, className, level, levelDiff, rankName, rankID
@@ -62,19 +85,25 @@ ADDON.local_lookup = function(optUnitID)
         levelDiff = 10
     end
     
-    if ( levelDiff > 9 ) then
-        levelDiff = 1
-    elseif ( levelDiff > 4 ) then
-        levelDiff = 2
-    elseif ( levelDiff >= 0 ) then
-        levelDiff = 3
-    elseif ( levelDiff < -4 ) then 
-        levelDiff = 4
-    elseif ( levelDiff < -9 ) then
-        levelDiff = 5
+    -- Smallest value is -59, largest value is +59.
+    -- CB0000 [+10+]
+    -- fc8f13 [+4 to 9]
+    -- fcea13 [+/-0 to 3]
+    -- 3CC400 [-4 to 9]
+    -- bbbbbb [-10+]
+
+    local minLevelDiff = 0
+    local maxLevelDiff = 20
+    if ( levelDiff < -10 ) then 
+        levelDiff = minLevelDiff 
+    elseif ( levelDiff > 10 ) then
+        levelDiff = maxLevelDiff
+    else
+        levelDiff = levelDiff + 10
     end
-    -- TODO: Replace above with arithmetical.
-    
+
+    local scaledLevelDiff = scaleInt({minLevelDiff, maxLevelDiff}, {1, (#ADDON.local_colours.level)}, levelDiff)
+    levelDiff = math.floor(scaledLevelDiff+0.5)
     playerDetails = { 
         faction = faction, guild = guildDetails, class = className, 
         level = {level, levelDiff}, rank = {rankName, rankID} }

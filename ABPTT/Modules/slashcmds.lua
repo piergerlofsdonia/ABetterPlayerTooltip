@@ -28,8 +28,17 @@ SlashCmdList.ABPTT = function()
 end
 
 SlashCmdList.DISABLEFEAT = function()
-    if ADDON.allowMouseOver then ADDON.allowMouseOver = false else ADDON.allowMouseOver = true end
-    print(ADDON.allowMouseOver)
+    local printstr
+    if ADDON.allowMouseOver then 
+        ADDON.allowMouseOver = false 
+        printstr = "disabled"
+    else 
+        ADDON.allowMouseOver = true 
+        printstr = "enabled"
+    end
+   
+    print("Mouseover functionality is " .. printstr .. "!")
+
 end
 
 SlashCmdList.CHANGEFADE = function(msg, ...)

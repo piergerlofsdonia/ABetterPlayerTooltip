@@ -10,12 +10,12 @@ local resetDefaults = function()
 
     local settingsToReturn = {
         frame = abptt_frameSettings,
-        text = {
+        text =  {
             font = "Fonts\\ARIALN.ttf",
-            size = 13, 
+            size = 13,
             style = "OUTLINE",
-            orientation = { "TOPLEFT", 7, -9 }
-            }
+            orientation = { "TOPLEFT", 7, -9 } 
+        }
     }
 
     ADDON.settings = settingsToReturn
