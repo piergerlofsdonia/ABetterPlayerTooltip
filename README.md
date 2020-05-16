@@ -13,3 +13,8 @@ The addon will automatically initalise the tooltip frame and reveal it when a pl
 * To disable the 'mouseover' functionality, use the chat command `/nomo` or `/nomouseover`
 * To change the time window in which the tooltip displays, use the chat command `/ttf <time value>` or `/ttfade <time value>` (e.g. `/ttf 10` to change the window fade interval to 10 seconds.
 * To change the position of the tooltip, or permanently show it, use the chat command `/abptt` or `ttmove` or just `/tt`. Once you have positioned the tooltip, use the same command to set the frame back to being non-interactive. 
+* To disable the tooltip entirely use the chat command `/ttd` or `/ttdisable`, re-use the command to re-enable the tooltip.
+
+### TODO:
+1. Fix issue where text is scaled down but never back up (need to reset font-size when write occurs).
+2. Update readme with colour schema.
