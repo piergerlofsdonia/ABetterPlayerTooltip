@@ -5,8 +5,9 @@ Designed to act as a replacement for the generic player tooltip, the ABPTT frame
 
 ## Installation:
 1. Clone the repo.
-2. Move the ABPTT folder to your <WoW Location>/Interface/Addons folder.
-3. Restart WoW to init the new files.
+2. Rename the src folder to 'ABPTT'.
+3. Move the ABPTT folder to your <WoW Location>/Interface/Addons folder.
+4. Restart WoW to init the new files.
   
 ## Usage:
 The addon will automatically initalise the tooltip frame and reveal it when a player is targeted or hovered-over. There are, however, some configuration options available:
