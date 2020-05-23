@@ -1,0 +1,14 @@
+## Interface: 11304
+## Title: ABetterPlayerTooltip
+## Author: Gerlofs (Noggenfogger - EU)
+## Notes: Provides a movable tooltip with more information than the traditional player tooltip.
+## Version: 1.0
+## SavedVariables:
+## SavedVariablesPerCharacter: abptt_frameSettings
+
+#Code
+Modules\lookup.lua
+Modules\settings.lua
+Modules\slashcmds.lua
+Modules\main.lua
+
